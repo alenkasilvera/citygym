@@ -1,0 +1,66 @@
+
+-- Creación de la base de datos
+CREATE DATABASE IF NOT EXISTS sistemacitygym;
+
+USE sistemacitygym;
+
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    usuario VARCHAR(100) NOT NULL UNIQUE,
+    contraseña VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS socios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    dni VARCHAR(8) NOT NULL UNIQUE,
+    nombre VARCHAR(100) NOT NULL,
+    telefono VARCHAR(15),
+    direccion VARCHAR(150),
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS entrenador (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    dni VARCHAR(8) NOT NULL UNIQUE,
+    nombre VARCHAR(100) NOT NULL,
+    telefono VARCHAR(15),
+    direccion VARCHAR(150),
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS plan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(20) NOT NULL UNIQUE,
+    nombre VARCHAR(100) NOT NULL,
+    entrenador VARCHAR(100),
+    cupos INT NOT NULL,
+    precio DECIMAL(10, 2) NOT NULL,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS ventas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    socio VARCHAR(100),
+    vendedor VARCHAR(100),
+    total DECIMAL(10, 2),
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS detalles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_plan INT,
+    cantidad INT,
+    precio DECIMAL(10, 2),
+    id_venta INT,
+    FOREIGN KEY (codigo_plan) REFERENCES plan(id),
+    FOREIGN KEY (id_venta) REFERENCES ventas(id)
+);
+
+CREATE TABLE IF NOT EXISTS configuracion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    cuil VARCHAR(15) NOT NULL UNIQUE,
+    telefono VARCHAR(20),
+    direccion VARCHAR(255)
+);
